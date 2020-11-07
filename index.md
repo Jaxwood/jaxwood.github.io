@@ -1,22 +1,85 @@
-### Welcome to GitHub Pages.
-This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:
+# Git hooks with Husky
 
+When doing javascript development it is common to have linting and test tasks in your package.json file.
+
+It is easy to forget to run these common tasks before pushing code and this can result in a broken build (if using continues integration) or the next developer will see the issues when pulling down the latest code.
+
+A way to work around this problem is to use git hooks that will allow you to hook into the git workflow to run tasks. Git hooks are not easy to share across a development team as git hooks are located in the .git/hooks folder.
+
+## Husky to the rescue
+
+Luckily a npm package called Husky can help solve this issue. Husky describes itself as “Git hooks made easy”. After using it I must agree that it does indeed do just that!
+
+Installing Husky is as simple as an npm install from the terminal in your project.
+
+`npm install husky --save-dev`
+
+The hooks can be inserted into yourpackage.json file in the scripts section using a pre-defined naming convention.
+
+In the below example I’m setting up pre-push and pre-commit hooks to run my unit tests.
+
+```json
+{
+  "name": "husky-example",
+  "version": "1.0.0",
+  "description": "husky example",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha",
+    "precommit": "npm test",
+    "prepush": "npm test"
+  },
+  "author": "Jacob Lorenzen",
+  "license": "MIT",
+  "devDependencies": {
+    "expect": "^1.20.2",
+    "husky": "^0.12.0",
+    "mocha": "^3.2.0"
+  }
+}
 ```
-$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+
+This setup can be shared across a development team and should help eliminate trivial linting issues or broken tests being pushed to the remote server.
+
+## Running multiple tasks with npm-run-all
+
+If there is a need to run multiple tasks you can use the package npm-run-all to combine all the tasks into one task and reference that task in your Husky git hook.
+
+In the below example I’m combining thetestand linttask into a validate task that my Husky git hooks can reference.
+
+```json
+{
+  "name": "husky-example",
+  "version": "1.0.0",
+  "description": "husky example",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha",
+    "lint": "standard",
+    "validate": "npm-run-all --parallel test lint",
+    "precommit": "npm run validate",
+    "prepush": "npm run validate"
+  },
+  "author": "Jacob Lorenzen",
+  "license": "MIT",
+  "devDependencies": {
+    "expect": "^1.20.2",
+    "husky": "^0.12.0",
+    "mocha": "^3.2.0",
+    "npm-run-all": "^4.0.0",
+    "standard": "^8.6.0"
+  },
+  "standard": {
+    "globals": [
+      "describe",
+      "it"
+    ]
+  }
+}
 ```
 
-If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.
+If for some reason you want to bypass this mechanism your can add the--no-verifyflag before doing your commit.
 
-### Designer Templates
-We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.
+`git commit -m "bypass git hooks" --no-verify`
 
-### Rather Drive Stick?
-If you prefer to not use the automatic generator, push a branch named `gh-pages` to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.
-
-### Authors and Contributors
-You can @mention a GitHub username to generate a link to their profile. The resulting `<a>` element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (@defunkt), PJ Hyett (@pjhyett), and Tom Preston-Werner (@mojombo) founded GitHub.
-
-### Support or Contact
-Having trouble with Pages? Check out the documentation at http://help.github.com/pages or contact support@github.com and we’ll help you sort it out.
+[Husky](https://www.npmjs.com/package/husky) and [npm-run-all](https://www.npmjs.com/package/npm-run-all) is definitely two libraries that I will keep using going forward as they help solve a problem I’ve experience many times myself.
