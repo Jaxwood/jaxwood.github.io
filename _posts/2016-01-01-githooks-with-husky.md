@@ -1,3 +1,7 @@
+---
+layout: default
+author: Jacob Lorenzen
+---
 # Git hooks with Husky
 
 When doing javascript development it is common to have linting and test tasks in your package.json file.
