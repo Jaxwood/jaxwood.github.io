@@ -4,8 +4,6 @@ title: Git hooks with Husky
 author: Jacob Lorenzen
 tags: [npm, node]
 ---
-# Git hooks with Husky
-
 When doing javascript development it is common to have linting and test tasks in your package.json file.
 
 It is easy to forget to run these common tasks before pushing code and this can result in a broken build (if using continues integration) or the next developer will see the issues when pulling down the latest code.

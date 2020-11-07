@@ -4,8 +4,6 @@ title: Standardize Git commit messages
 author: Jacob Lorenzen
 tags: [npm, node]
 ---
-# Standardize Git commit messages
-
 Working in a team on a shared code base there is benefits in having standardized commit messages. You can use the commit messages to automate some tasks based on a predefined template for the commit messages that can be parsed by other tools.
 
 One of the maybe not so obvious benefits is that it can help with automating semantic versioning of your software.
