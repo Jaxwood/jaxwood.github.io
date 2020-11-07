@@ -1,6 +1,8 @@
 ---
-layout: default
+layout: post
+title: Git hooks with Husky
 author: Jacob Lorenzen
+tags: [npm, node]
 ---
 # Git hooks with Husky
 

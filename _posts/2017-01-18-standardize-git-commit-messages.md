@@ -1,6 +1,8 @@
 ---
-layout: default
+layout: post
+title: Standardize Git commit messages
 author: Jacob Lorenzen
+tags: [npm, node]
 ---
 # Standardize Git commit messages
 
